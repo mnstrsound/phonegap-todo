@@ -2,28 +2,24 @@ function TodoApp (elem) {
     var _this = this;
     this.parent = elem;
     this.todos = [];
-    var indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB || window.shimIndexedDB;
-    var open;
-    try {
-        open = indexedDB.open('TodoApp');
-    } catch (e) {
-        alert('Catched: ' + e);
-    }
+    window.shimIndexedDB.__useShim();
+    var indexedDB = window.shimIndexedDB || window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB;
+    var  open = indexedDB.open('Todos', 1);
 
-    open.onupgradeneeded = function() {
-        var db = open.result;
+    open.onupgradeneeded = function(e) {
+        var db = e.target.result;
         db.createObjectStore('Todos', {keyPath: 'id', autoIncrement: true});
 
         _this.db = db;
     };
 
-    open.onsuccess = function() {
-        _this.db = open.result;
+    open.onsuccess = function(e) {
+        _this.db = e.target.result;
         _this.getTodos();
     };
 
     open.onerror = function (e) {
-        alert('Open error: ' + e.errorCode);
+        console.log(e);
     };
 
     this.render();
@@ -35,12 +31,20 @@ TodoApp.prototype.getTodos = function () {
     var _this = this;
     var transaction = this.db.transaction('Todos', 'readwrite');
     var store = transaction.objectStore('Todos');
-    var request = store.getAll();
+    var request = store.openCursor();
+
+    transaction.oncomplete = function () {
+      _this.renderTodos();
+    };
 
     request.onsuccess = function (e) {
-        error.innerText = 'Todos: ' + e.target.result.toString();
-        _this.todos = e.target.result;
-        _this.renderTodos();
+        var cursor = e.target.result;
+
+        if (cursor) {
+            items.push(cursor.value);
+            _this.todos.push(e.target.result);
+            cursor.continue();
+        }
     };
     
     request.onerror = function (e) {
