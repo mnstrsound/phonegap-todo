@@ -1,6 +1,7 @@
 function TodoApp () {
     var _this = this;
     this.todos = [];
+    window.shimIndexedDB.__useShim();
     var indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB || window.shimIndexedDB;
     var open = indexedDB.open('TodoApp', 1);
 
