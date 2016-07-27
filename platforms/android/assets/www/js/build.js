@@ -103,6 +103,7 @@ Todo.prototype.update = function () {
 function TodoApp () {
     var _this = this;
     this.todos = [];
+    window.shimIndexedDB.__useShim();
     var indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB || window.shimIndexedDB;
     var open = indexedDB.open('TodoApp', 1);
 
@@ -146,10 +147,10 @@ TodoApp.prototype.getTodos = function () {
 
 TodoApp.prototype.renderTodos = function () {
     var _this = this;
-    this.todos.forEach(function (params) {
+    for (var i = 0, len =  this.todos.length; i < len; i++) {
         var todo = new Todo(params);
         todo.render(_this);
-    });
+    }
 };
 
 TodoApp.prototype.addTodo = function (e) {
