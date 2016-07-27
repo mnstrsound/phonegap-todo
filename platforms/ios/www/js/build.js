@@ -145,8 +145,7 @@ TodoApp.prototype.getTodos = function () {
         var cursor = e.target.result;
 
         if (cursor) {
-            items.push(cursor.value);
-            _this.todos.push(e.target.result);
+            _this.todos.push(cursor.value);
             cursor.continue();
         }
     };
