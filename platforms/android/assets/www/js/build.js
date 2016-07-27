@@ -49,6 +49,7 @@ Todo.prototype.render = function (parent) {
     var todo = document.createElement('div');
     var todoName = document.createElement('div');
     var todoDate = document.createElement('div');
+    var todoDesc = document.createElement('div');
     var todoRemove = document.createElement('div');
 
     this.els = {
@@ -56,20 +57,24 @@ Todo.prototype.render = function (parent) {
         todo: todo,
         todoName: todoName,
         todoDate: todoDate,
+        todoDesc: todoDesc,
         todoRemove: todoRemove
     };
 
     todo.classList.add('todo');
     todoName.classList.add('todo__name');
     todoDate.classList.add('todo__date');
+    todoDesc.classList.add('todo__desc');
     todoRemove.classList.add('todo__remove');
 
     todoName.innerText = this.params.name;
     todoDate.innerText = this.params.date;
-    todoRemove.innerText = '╳';
+    todoDesc.innerText = this.params.desc;
+    todoRemove.innerText = 'удалить';
 
     todo.appendChild(todoDate);
     todo.appendChild(todoName);
+    todo.appendChild(todoDesc);
     todo.appendChild(todoRemove);
     parent.els.todoApp.appendChild(todo);
 
@@ -129,8 +134,6 @@ function TodoApp (elem) {
     this.render();
 }
 
-var error = document.getElementById('error');
-
 TodoApp.prototype.getTodos = function () {
     var _this = this;
     var transaction = this.db.transaction('Todos', 'readwrite');
@@ -149,9 +152,9 @@ TodoApp.prototype.getTodos = function () {
             cursor.continue();
         }
     };
-    
+
     request.onerror = function (e) {
-        error.innerText = 'Get error: ' + e.errorCode;
+        console.log(e);
     }
 };
 
@@ -174,13 +177,29 @@ TodoApp.prototype.addTodo = function (e) {
     var store = transaction.objectStore('Todos');
     var request;
 
-    if (!this.els.todoAppFormNameInput.value) return false;
-    params.name = this.els.todoAppFormNameInput.value;
-    this.els.todoAppFormNameInput.value = '';
+    var valid = true;
 
-    if (this.els.todoAppFormNameInput.value) return false;
-    params.date = this.els.todoAppFormDateInput.value;
+    function checkInput(el, str) {
+        if (!el.value) {
+            el.classList.add('todoapp__input--error');
+            valid = false;
+        } else {
+            el.classList.remove('todoapp__input--error');
+            params[str] = el.value;
+        }
+    }
+
+    checkInput(this.els.todoAppFormNameInput, 'name');
+    checkInput(this.els.todoAppFormDateInput, 'date');
+    checkInput(this.els.todoAppFormDescInput, 'desc');
+
+    if (!valid) {
+        return;
+    }
+
+    this.els.todoAppFormNameInput.value = '';
     this.els.todoAppFormDateInput.value = '';
+    this.els.todoAppFormDescInput.value = '';
 
     params.finished = false;
 
@@ -211,7 +230,7 @@ TodoApp.prototype.removeTodo = function (todo) {
     };
 
     request.onerror = function (e) {
-        error.innerText = 'Remove error: ' + e.errorCode;
+        console.log(e);
     };
 };
 
@@ -230,12 +249,12 @@ TodoApp.prototype.updateTodo = function (todo) {
         };
 
         request.onerror = function (e) {
-            error.innerText = 'Update error: ' + e.errorCode;
+            console.log(e);
         };
     };
 
     request.onerror = function (e) {
-        error.innerText = 'Cursor error: ' + e.errorCode;
+        console.log(e);
     };
 
 };
@@ -245,13 +264,18 @@ TodoApp.prototype.render = function () {
     var todoAppForm = document.createElement('form');
     var todoAppFormNameInput = document.createElement('input');
     var todoAppFormDateInput = document.createElement('input');
+    var todoAppFormDescInput = document.createElement('textarea');
     var todoAppFormSubmit = document.createElement('input');
 
     todoAppForm.setAttribute('action', '#');
     todoAppFormNameInput.setAttribute('type', 'text');
     todoAppFormNameInput.setAttribute('name', 'name');
+    todoAppFormNameInput.setAttribute('placeholder', 'Введите название');
     todoAppFormDateInput.setAttribute('type', 'text');
     todoAppFormDateInput.setAttribute('name', 'date');
+    todoAppFormDateInput.setAttribute('placeholder', 'Введите дату');
+    todoAppFormDescInput.setAttribute('name', 'desc');
+    todoAppFormDescInput.setAttribute('placeholder', 'Введите описание');
     todoAppFormSubmit.setAttribute('type', 'submit');
     todoAppFormSubmit.setAttribute('value', 'Добавить');
 
@@ -259,10 +283,12 @@ TodoApp.prototype.render = function () {
     todoAppForm.classList.add('todoapp__form');
     todoAppFormNameInput.classList.add('todoapp__input', 'todoapp__input--name');
     todoAppFormDateInput.classList.add('todoapp__input', 'todoapp__input--date');
+    todoAppFormDescInput.classList.add('todoapp__input', 'todoapp__input--desc');
     todoAppFormSubmit.classList.add('todoapp__submit');
 
     todoAppForm.appendChild(todoAppFormNameInput);
     todoAppForm.appendChild(todoAppFormDateInput);
+    todoAppForm.appendChild(todoAppFormDescInput);
     todoAppForm.appendChild(todoAppFormSubmit);
     todoApp.appendChild(todoAppForm);
 
@@ -271,6 +297,7 @@ TodoApp.prototype.render = function () {
         todoAppForm: todoAppForm,
         todoAppFormNameInput: todoAppFormNameInput,
         todoAppFormDateInput: todoAppFormDateInput,
+        todoAppFormDescInput: todoAppFormDescInput,
         todoAppFormSubmit: todoAppFormSubmit
     };
 

@@ -7,7 +7,7 @@
     display: block;
     padding: 0 10px;
     margin: 0 auto 25px auto;
-    width: 280px;
+    width: 100%;
     height: 50px;
     border: 1px solid #f1f1f1;
     box-shadow: 0 2px 2px rgba(0,0,0,.2);
@@ -21,6 +21,13 @@
     &--date {
 
     }
+    &--desc {
+      padding: 10px;
+      height: 100px;
+    }
+    &--error {
+      border: 1px solid #f00;
+    }
   }
   &__submit {
     display: block;
@@ -30,7 +37,7 @@
     font-size: 18px;
     text-transform: uppercase;
     box-shadow: 0 2px 2px rgba(0,0,0,.2);
-    width: 280px;
+    width: 100%;
     height: 50px;
     cursor: pointer;
     transition: all .3s;

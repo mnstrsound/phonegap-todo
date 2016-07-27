@@ -12,8 +12,10 @@ body {
   background: #ecf0f1;
 }
 
-input {
+input,textarea {
   border: 0;
+  font-size: inherit;
   outline: none;
   font-family: inherit;
+  resize: none;
 }

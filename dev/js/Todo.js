@@ -6,6 +6,7 @@ Todo.prototype.render = function (parent) {
     var todo = document.createElement('div');
     var todoName = document.createElement('div');
     var todoDate = document.createElement('div');
+    var todoDesc = document.createElement('div');
     var todoRemove = document.createElement('div');
 
     this.els = {
@@ -13,20 +14,24 @@ Todo.prototype.render = function (parent) {
         todo: todo,
         todoName: todoName,
         todoDate: todoDate,
+        todoDesc: todoDesc,
         todoRemove: todoRemove
     };
 
     todo.classList.add('todo');
     todoName.classList.add('todo__name');
     todoDate.classList.add('todo__date');
+    todoDesc.classList.add('todo__desc');
     todoRemove.classList.add('todo__remove');
 
     todoName.innerText = this.params.name;
     todoDate.innerText = this.params.date;
-    todoRemove.innerText = '╳';
+    todoDesc.innerText = this.params.desc;
+    todoRemove.innerText = 'удалить';
 
     todo.appendChild(todoDate);
     todo.appendChild(todoName);
+    todo.appendChild(todoDesc);
     todo.appendChild(todoRemove);
     parent.els.todoApp.appendChild(todo);
 

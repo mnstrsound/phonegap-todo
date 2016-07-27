@@ -1,8 +1,11 @@
 .app {
+  padding: 50px 20px;
+  max-width: 960px;
+  margin: 0 auto;
   &__title {
     text-align: center;
     font-size: 30px;
     text-transform: uppercase;
-    margin: 50px;
+    margin: 0 0 50px 0;
   }
 }
