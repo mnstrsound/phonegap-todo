@@ -1,8 +1,14 @@
-function TodoApp () {
+function TodoApp (elem) {
     var _this = this;
+    this.parent = elem;
     this.todos = [];
     var indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB || window.shimIndexedDB;
-    var open = indexedDB.open('TodoApp', 1);
+    var open;
+    try {
+        open = indexedDB.open('TodoApp', 1);
+    } catch (e) {
+        alert('Catched: ' + e);
+    }
 
     open.onupgradeneeded = function() {
         var db = open.result;
@@ -161,7 +167,7 @@ TodoApp.prototype.render = function () {
         todoAppFormSubmit: todoAppFormSubmit
     };
 
-    document.body.appendChild(todoApp);
+   this.parent.appendChild(todoApp);
     this.setEventListeners();
 };
 

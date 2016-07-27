@@ -17,15 +17,16 @@ Todo.prototype.render = function (parent) {
     };
 
     todo.classList.add('todo');
-    todoName.classList.add('todo_name');
+    todoName.classList.add('todo__name');
     todoDate.classList.add('todo__date');
     todoRemove.classList.add('todo__remove');
 
     todoName.innerText = this.params.name;
     todoDate.innerText = this.params.date;
+    todoRemove.innerText = '╳';
 
-    todo.appendChild(todoName);
     todo.appendChild(todoDate);
+    todo.appendChild(todoName);
     todo.appendChild(todoRemove);
     parent.els.todoApp.appendChild(todo);
 
@@ -36,7 +37,7 @@ Todo.prototype.render = function (parent) {
 
 Todo.prototype.setEventListeners = function () {
     this.els.todoRemove.addEventListener('click', this.remove.bind(this), false);
-    this.els.todoName.addEventListener('click', this.update.bind(this), false);
+    this.els.todo.addEventListener('click', this.update.bind(this), false);
 };
 
 Todo.prototype.updateView = function () {
@@ -47,7 +48,8 @@ Todo.prototype.updateView = function () {
     }
 };
 
-Todo.prototype.remove = function () {
+Todo.prototype.remove = function (e) {
+    e.stopPropagation();
     this.parent.removeTodo(this);
 };
 

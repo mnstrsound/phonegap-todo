@@ -37,6 +37,6 @@ var app = {
     },
     // Update DOM on a Received Event
     receivedEvent: function() {
-        var todoApp = new TodoApp();
+        var todoApp = new TodoApp(document.getElementById('app'));
     }
 };

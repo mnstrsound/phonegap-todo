@@ -37,7 +37,7 @@ var app = {
     },
     // Update DOM on a Received Event
     receivedEvent: function() {
-        var todoApp = new TodoApp();
+        var todoApp = new TodoApp(document.getElementById('app'));
     }
 };
 
@@ -60,15 +60,16 @@ Todo.prototype.render = function (parent) {
     };
 
     todo.classList.add('todo');
-    todoName.classList.add('todo_name');
+    todoName.classList.add('todo__name');
     todoDate.classList.add('todo__date');
     todoRemove.classList.add('todo__remove');
 
     todoName.innerText = this.params.name;
     todoDate.innerText = this.params.date;
+    todoRemove.innerText = '╳';
 
-    todo.appendChild(todoName);
     todo.appendChild(todoDate);
+    todo.appendChild(todoName);
     todo.appendChild(todoRemove);
     parent.els.todoApp.appendChild(todo);
 
@@ -79,7 +80,7 @@ Todo.prototype.render = function (parent) {
 
 Todo.prototype.setEventListeners = function () {
     this.els.todoRemove.addEventListener('click', this.remove.bind(this), false);
-    this.els.todoName.addEventListener('click', this.update.bind(this), false);
+    this.els.todo.addEventListener('click', this.update.bind(this), false);
 };
 
 Todo.prototype.updateView = function () {
@@ -90,7 +91,8 @@ Todo.prototype.updateView = function () {
     }
 };
 
-Todo.prototype.remove = function () {
+Todo.prototype.remove = function (e) {
+    e.stopPropagation();
     this.parent.removeTodo(this);
 };
 
@@ -100,11 +102,17 @@ Todo.prototype.update = function () {
 };
 
 
-function TodoApp () {
+function TodoApp (elem) {
     var _this = this;
+    this.parent = elem;
     this.todos = [];
     var indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB || window.shimIndexedDB;
-    var open = indexedDB.open('TodoApp', 1);
+    var open;
+    try {
+        open = indexedDB.open('TodoApp', 1);
+    } catch (e) {
+        alert('Catched: ' + e);
+    }
 
     open.onupgradeneeded = function() {
         var db = open.result;
@@ -263,7 +271,7 @@ TodoApp.prototype.render = function () {
         todoAppFormSubmit: todoAppFormSubmit
     };
 
-    document.body.appendChild(todoApp);
+   this.parent.appendChild(todoApp);
     this.setEventListeners();
 };
 

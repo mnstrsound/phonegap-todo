@@ -7,6 +7,13 @@
 
 body {
   font-size: $font-size;
-  font-family: Arial, sans-serif;
+  font-family: Verdana, sans-serif;
   font-weight: normal;
+  background: #ecf0f1;
+}
+
+input {
+  border: 0;
+  outline: none;
+  font-family: inherit;
 }
