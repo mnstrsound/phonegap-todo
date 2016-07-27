@@ -121,9 +121,11 @@ function TodoApp () {
     open.onerror = function (e) {
         alert('Open error: ' + e.target.errorCode);
     };
-    
+
     this.render();
 }
+
+var error = document.getElementById('error');
 
 TodoApp.prototype.getTodos = function () {
     var _this = this;
@@ -137,7 +139,7 @@ TodoApp.prototype.getTodos = function () {
     };
     
     request.onerror = function (e) {
-        alert('Get error: ' + e.target.errorCode);
+        error.innerText = 'Get error: ' + e.target.errorCode;
     }
 };
 
@@ -181,7 +183,7 @@ TodoApp.prototype.addTodo = function (e) {
     };
 
     request.onerror = function (e) {
-        alert('Add error: ' + e.target.errorCode);
+        error.innerText = 'Add error: ' + e.target.errorCode;
     };
 };
 
@@ -197,7 +199,7 @@ TodoApp.prototype.removeTodo = function (todo) {
     };
 
     request.onerror = function (e) {
-        alert('Remove error: ' + e.target.errorCode);
+        error.innerText = 'Remove error: ' + e.target.errorCode;
     };
 };
 
@@ -216,12 +218,12 @@ TodoApp.prototype.updateTodo = function (todo) {
         };
 
         request.onerror = function (e) {
-            alert('Update error: ' + e.target.errorCode);
+            error.innerText = 'Update error: ' + e.target.errorCode;
         };
     };
 
     request.onerror = function (e) {
-        alert('Cursor error: ' + e.target.errorCode);
+        error.innerText = 'Cursor error: ' + e.target.errorCode;
     };
 
 };
@@ -257,7 +259,7 @@ TodoApp.prototype.render = function () {
         todoAppForm: todoAppForm,
         todoAppFormNameInput: todoAppFormNameInput,
         todoAppFormDateInput: todoAppFormDateInput,
-        todoAppFormSubmit: todoAppFormSubmit,
+        todoAppFormSubmit: todoAppFormSubmit
     };
 
     document.body.appendChild(todoApp);
