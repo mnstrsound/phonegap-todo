@@ -5,7 +5,7 @@ function TodoApp (elem) {
     var indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB || window.shimIndexedDB;
     var open;
     try {
-        open = indexedDB.open('TodoApp', 1);
+        open = indexedDB.open('TodoApp');
     } catch (e) {
         alert('Catched: ' + e);
     }
