@@ -76,7 +76,7 @@
         <param name="ios-package" value="CDVVibration" />
     </feature>
     <name>Todo</name>
-    <description>Hello World sample application that responds to the deviceready event.</description>
+    <description>Стандартное приложение TodoApp</description>
     <author email="support@phonegap.com" href="http://phonegap.com">PhoneGap Team</author>
     <content src="index.html" />
     <icon src="icon.png" />
