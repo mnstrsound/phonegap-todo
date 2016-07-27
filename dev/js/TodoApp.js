@@ -32,7 +32,7 @@ TodoApp.prototype.getTodos = function () {
     var request = store.getAll();
 
     request.onsuccess = function (e) {
-        error.innerText = 'Get error: ' + e.target.result.toString();
+        error.innerText = 'Todos: ' + e.target.result.toString();
         _this.todos = e.target.result;
         _this.renderTodos();
     };
