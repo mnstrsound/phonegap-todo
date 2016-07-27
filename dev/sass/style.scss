@@ -1,0 +1,12 @@
+@import "reset";
+@import "mixins";
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-size: $font-size;
+  font-family: Arial, sans-serif;
+  font-weight: normal;
+}
