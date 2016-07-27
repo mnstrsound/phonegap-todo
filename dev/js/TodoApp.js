@@ -1,7 +1,6 @@
 function TodoApp () {
     var _this = this;
     this.todos = [];
-    window.shimIndexedDB.__useShim();
     var indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB || window.shimIndexedDB;
     var open = indexedDB.open('TodoApp', 1);
 
@@ -18,7 +17,7 @@ function TodoApp () {
     };
 
     open.onerror = function (e) {
-        alert('Open error: ' + e.target.errorCode);
+        alert('Open error: ' + e.errorCode);
     };
 
     this.render();
@@ -33,12 +32,13 @@ TodoApp.prototype.getTodos = function () {
     var request = store.getAll();
 
     request.onsuccess = function (e) {
+        error.innerText = 'Get error: ' + e.target.result.toString();
         _this.todos = e.target.result;
         _this.renderTodos();
     };
     
     request.onerror = function (e) {
-        error.innerText = 'Get error: ' + e.target.errorCode;
+        error.innerText = 'Get error: ' + e.errorCode;
     }
 };
 
@@ -46,7 +46,7 @@ TodoApp.prototype.getTodos = function () {
 TodoApp.prototype.renderTodos = function () {
     var _this = this;
     for (var i = 0, len =  this.todos.length; i < len; i++) {
-        var todo = new Todo(params);
+        var todo = new Todo(_this.todos[i]);
         todo.render(_this);
     }
 };
@@ -82,7 +82,7 @@ TodoApp.prototype.addTodo = function (e) {
     };
 
     request.onerror = function (e) {
-        error.innerText = 'Add error: ' + e.target.errorCode;
+        error.innerText = 'Add error: ' + e.errorCode;
     };
 };
 
@@ -98,7 +98,7 @@ TodoApp.prototype.removeTodo = function (todo) {
     };
 
     request.onerror = function (e) {
-        error.innerText = 'Remove error: ' + e.target.errorCode;
+        error.innerText = 'Remove error: ' + e.errorCode;
     };
 };
 
@@ -117,12 +117,12 @@ TodoApp.prototype.updateTodo = function (todo) {
         };
 
         request.onerror = function (e) {
-            error.innerText = 'Update error: ' + e.target.errorCode;
+            error.innerText = 'Update error: ' + e.errorCode;
         };
     };
 
     request.onerror = function (e) {
-        error.innerText = 'Cursor error: ' + e.target.errorCode;
+        error.innerText = 'Cursor error: ' + e.errorCode;
     };
 
 };
