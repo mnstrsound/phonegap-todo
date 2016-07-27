@@ -45,10 +45,10 @@ TodoApp.prototype.getTodos = function () {
 
 TodoApp.prototype.renderTodos = function () {
     var _this = this;
-    this.todos.forEach(function (params) {
+    for (var i = 0, len =  this.todos.length; i < len; i++) {
         var todo = new Todo(params);
         todo.render(_this);
-    });
+    }
 };
 
 TodoApp.prototype.addTodo = function (e) {
